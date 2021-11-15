@@ -20,11 +20,7 @@ int tusb_board_init(void)
     hpcd.Instance = USBD_INSTANCE;
     hpcd.Init.dev_endpoints = 8;
     hpcd.Init.speed = USBD_PCD_SPEED;
-#if defined(SOC_SERIES_STM32F3) || defined(SOC_SERIES_STM32F4)
     hpcd.Init.ep0_mps = EP_MPS_64;
-#else
-    hpcd.Init.ep0_mps = DEP0CTL_MPS_64;
-#endif
 #if !defined(SOC_SERIES_STM32F1)
     hpcd.Init.phy_itface = USBD_PCD_PHY_MODULE;
 #endif
