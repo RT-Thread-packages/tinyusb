@@ -1,4 +1,4 @@
-# TinyUSB for RT-Thread
+# TinyUSB for RT-Thread | [中文文档](rt-thread/README_ZH.md)
 
 ![tinyusb](docs/assets/logo.svg)
 
