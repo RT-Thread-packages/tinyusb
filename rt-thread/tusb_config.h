@@ -42,6 +42,8 @@ extern "C" {
 #define CFG_TUSB_MCU    OPT_MCU_STM32F4
 #elif defined(SOC_SERIES_STM32H7)
 #define CFG_TUSB_MCU    OPT_MCU_STM32H7
+#elif defined(SOC_NRF52840)
+#define CFG_TUSB_MCU    OPT_MCU_NRF5X
 #else
 #error "No support for current MCU"
 #endif
