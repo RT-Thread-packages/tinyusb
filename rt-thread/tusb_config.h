@@ -45,7 +45,7 @@ extern "C" {
 #elif defined(SOC_NRF52840)
 #define CFG_TUSB_MCU    OPT_MCU_NRF5X
 #else
-#error "No support for current MCU"
+#error "Not support for current MCU"
 #endif
 
 #define CFG_TUSB_OS OPT_OS_RTTHREAD
