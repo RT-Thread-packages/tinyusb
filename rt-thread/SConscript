@@ -27,7 +27,7 @@ if GetDepend(["PKG_TINYUSB_DEVICE_CDC"]):
     src += ["../src/class/cdc/cdc_device.c"]
 
 if GetDepend(["PKG_TINYUSB_DEVICE_MSC"]):
-    src += ["../src/class/msc/msc_device.c", "port/msc_device.c"]
+    src += ["../src/class/msc/msc_device.c", "port/msc_device_port.c"]
 
 if GetDepend(["PKG_TINYUSB_DEVICE_EXAMPLE_CDC"]):
     src += ["example/cdc.c"]
