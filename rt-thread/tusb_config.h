@@ -52,6 +52,13 @@ extern "C" {
 
 #define CFG_TUSB_OS OPT_OS_RTTHREAD
 
+//--------------------------------------------------------------------
+// DEBUG CONFIGURATION
+//--------------------------------------------------------------------
+#ifdef CFG_TUSB_DEBUG
+#define CFG_TUSB_DEBUG_PRINTF rt_kprintf
+#endif /* CFG_TUSB_DEBUG */
+
 // RHPort number used for device can be defined by board.mk, default to port 0
 #ifndef BOARD_DEVICE_RHPORT_NUM
 #define BOARD_DEVICE_RHPORT_NUM     0
@@ -76,9 +83,6 @@ extern "C" {
 #else
   #error "Incorrect RHPort configuration"
 #endif
-
-// CFG_TUSB_DEBUG is defined by compiler in DEBUG build
-// #define CFG_TUSB_DEBUG           0
 
 /* USB DMA on some MCUs can only access a specific SRAM region with restriction on alignment.
  * Tinyusb use follows macros to declare transferring memory so that they can be put

@@ -56,7 +56,7 @@ static int init_tinyusb(void) {
     tid = rt_thread_create("tusb", tusb_thread_entry, RT_NULL,
                            PKG_TINYUSB_STACK_SIZE, 4, 10);
     if (tid == RT_NULL) {
-        LOG_E("Fail to create a USB stack thread");
+        LOG_E("Fail to create TinyUSB thread");
         return -1;
     }
 #else
@@ -66,7 +66,7 @@ static int init_tinyusb(void) {
     result = rt_thread_init(tid, "tusb", tusb_thread_entry, RT_NULL,
                             tusb_stack, sizeof(tusb_stack), 4, 10);
     if (tid != RT_EOK) {
-        LOG_E("Fail to create a USB stack thread");
+        LOG_E("Fail to create TinyUSB thread");
         return -1;
     }
 #endif
