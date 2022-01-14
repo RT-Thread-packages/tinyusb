@@ -108,10 +108,12 @@ extern "C" {
 #endif
 
 // CDC FIFO size of TX and RX
-#define CFG_TUD_CDC_RX_BUFSIZE   64
-#define CFG_TUD_CDC_TX_BUFSIZE   64
+#define CFG_TUD_CDC_RX_BUFSIZE    64
+#define CFG_TUD_CDC_TX_BUFSIZE    64
 
 #define CFG_TUD_MSC_EP_BUFSIZE    4096
+
+#define CFG_TUD_HID_EP_BUFSIZE    16
 
 
 #ifdef __cplusplus
