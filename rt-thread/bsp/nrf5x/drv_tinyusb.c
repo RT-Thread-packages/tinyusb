@@ -8,6 +8,8 @@
  * 2021-11-25     chenyingchun first version
  */
 
+#include <rtthread.h>
+
 #include "nrfx.h"
 #include "nrf_gpio.h"
 #include "nrfx_power.h"
@@ -24,7 +26,11 @@
 //--------------------------------------------------------------------+
 void USBD_IRQHandler(void)
 {
+   rt_interrupt_enter();
+
    tud_int_handler(0);
+
+   rt_interrupt_leave();
 }
 
 /*------------------------------------------------------------------*/
@@ -35,7 +41,7 @@ void USBD_IRQHandler(void)
 // We must call it within SD's SOC event handler, or set it as power event handler if SD is not enabled.
 extern void tusb_hal_nrf_power_event(uint32_t event);
 
-void tusb_board_init(void)
+void tud_board_init(void)
 {
   // stop LF clock just in case we jump from application without reset
   NRF_CLOCK->TASKS_LFCLKSTOP = 1UL;

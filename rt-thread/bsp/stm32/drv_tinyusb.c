@@ -34,5 +34,9 @@ int tusb_board_init(void)
 
 void USBD_IRQ_HANDLER(void)
 {
+    rt_interrupt_enter();
+
     tud_int_handler(0);
+
+    rt_interrupt_leave();
 }

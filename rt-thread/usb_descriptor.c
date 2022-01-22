@@ -117,7 +117,7 @@ enum
 #define EPNUM_MSC_OUT     0x03
 #define EPNUM_MSC_IN      0x83
 
-#define EPNUM_HID     0x84
+#define EPNUM_HID         0x84
 
 uint8_t const desc_fs_configuration[] =
 {
