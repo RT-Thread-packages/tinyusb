@@ -49,7 +49,7 @@ typedef rt_sem_t osal_semaphore_t;
 
 static inline osal_semaphore_t
 osal_semaphore_create(osal_semaphore_def_t *semdef) {
-    rt_sem_init(semdef, "tusb", 0, RT_IPC_FLAG_FIFO);
+    rt_sem_init(semdef, "tusb", 0, RT_IPC_FLAG_PRIO);
     return semdef;
 }
 
@@ -73,7 +73,7 @@ typedef struct rt_mutex osal_mutex_def_t;
 typedef rt_mutex_t osal_mutex_t;
 
 static inline osal_mutex_t osal_mutex_create(osal_mutex_def_t *mdef) {
-    rt_mutex_init(mdef, "tusb", RT_IPC_FLAG_FIFO);
+    rt_mutex_init(mdef, "tusb", RT_IPC_FLAG_PRIO);
     return mdef;
 }
 
@@ -106,7 +106,7 @@ typedef rt_mq_t osal_queue_t;
 
 static inline osal_queue_t osal_queue_create(osal_queue_def_t *qdef) {
     rt_mq_init(&(qdef->sq), "tusb", qdef->buf, qdef->item_sz,
-               qdef->item_sz * qdef->depth, RT_IPC_FLAG_FIFO);
+               qdef->item_sz * qdef->depth, RT_IPC_FLAG_PRIO);
     return &(qdef->sq);
 }
 

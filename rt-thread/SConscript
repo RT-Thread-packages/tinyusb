@@ -1,0 +1,49 @@
+import rtconfig
+from building import *
+
+cwd     = GetCurrentDir()
+src     = Split("""
+../src/tusb.c
+../src/common/tusb_fifo.c
+../src/device/usbd.c
+../src/device/usbd_control.c
+./tinyusb_port.c
+./usb_descriptor.c
+""")
+path = [cwd, cwd + "/../src"]
+
+# BSP
+if GetDepend(["SOC_FAMILY_STM32"]):
+    src += ["bsp/stm32/drv_tinyusb.c",
+            "../src/portable/st/synopsys/dcd_synopsys.c",
+            "../src/portable/st/stm32_fsdev/dcd_stm32_fsdev.c"]
+
+if GetDepend(["SOC_NRF52840"]):
+    src += ["../src/portable/nordic/nrf5x/dcd_nrf5x.c",
+            "bsp/nrf5x/drv_tinyusb.c"]
+    
+# Device class
+if GetDepend(["PKG_TINYUSB_DEVICE_CDC"]):
+    src += ["../src/class/cdc/cdc_device.c"]
+
+if GetDepend(["PKG_TINYUSB_DEVICE_MSC"]):
+    src += ["../src/class/msc/msc_device.c", "port/msc_device_port.c"]
+
+if GetDepend(["PKG_TINYUSB_DEVICE_HID"]):
+    src += ["../src/class/hid/hid_device.c", "port/hid_device_port.c"]
+
+if GetDepend(["PKG_TINYUSB_DEVICE_EXAMPLE_CDC"]):
+    src += ["example/cdc_example.c"]
+  
+LOCAL_CCFLAGS = ''
+
+if rtconfig.PLATFORM == 'gcc': # GCC
+    LOCAL_CCFLAGS += ' -std=c99'
+elif rtconfig.PLATFORM == 'armcc': # Keil AC5
+    LOCAL_CCFLAGS += ' --c99 --gnu -g -W'
+elif rtconfig.PLATFORM == 'armclang': # Keil AC6
+    LOCAL_CCFLAGS += ' -std=c99 -g -w'
+    
+group = DefineGroup('tinyusb', src, depend = ['PKG_USING_TINYUSB'], CPPPATH = path, LOCAL_CCFLAGS = LOCAL_CCFLAGS)
+
+Return('group')
