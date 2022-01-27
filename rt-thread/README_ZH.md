@@ -48,4 +48,4 @@ RT-Thread 包管理器中的路径如下：
 3、Feedback
 -----------
 
-issue: [tfx2001/tinyusb](https://github.com/tfx2001/tinyusb/issues)
+issue: [RT-Thread-packages/tinyusb](https://github.com/RT-Thread-packages/tinyusb/issues)
