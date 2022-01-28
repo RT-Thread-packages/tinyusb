@@ -15,7 +15,7 @@ path = [cwd, cwd + "/../src"]
 # BSP
 if GetDepend(["SOC_FAMILY_STM32"]):
     src += ["bsp/stm32/drv_tinyusb.c",
-            "../src/portable/st/synopsys/dcd_synopsys.c",
+            "../src/portable/synopsys/dwc2/dcd_dwc2.c",
             "../src/portable/st/stm32_fsdev/dcd_stm32_fsdev.c"]
 
 if GetDepend(["SOC_NRF52840"]):
