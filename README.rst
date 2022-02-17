@@ -32,6 +32,7 @@ Supported MCUs
 
 The stack supports the following MCUs:
 
+- **Allwinner:** F1C100s/F1C200s
 - **Broadcom:** BCM2837, BCM2711
 - **Dialog:** DA1469x
 - **Espressif:** ESP32-S2, ESP32-S3
@@ -64,7 +65,7 @@ Supports multiple device configurations by dynamically changing USB descriptors,
 -  Audio Class 2.0 (UAC2)
 -  Bluetooth Host Controller Interface (BTH HCI)
 -  Communication Device Class (CDC)
--  Device Firmware Update (DFU): DFU mode (WIP) and Runtinme
+-  Device Firmware Update (DFU): DFU mode (WIP) and Runtime
 -  Human Interface Device (HID): Generic (In & Out), Keyboard, Mouse, Gamepad etc ...
 -  Mass Storage Class (MSC): with multiple LUNs
 -  Musical Instrument Digital Interface (MIDI)
@@ -90,7 +91,7 @@ TinyUSB is completely thread-safe by pushing all Interrupt Service Request (ISR)
 
 - **No OS**
 - **FreeRTOS**
-- `RT-Thread <https://github.com/RT-Thread/rt-thread>`_
+- `RT-Thread <https://github.com/RT-Thread/rt-thread>`_: `repo <https://github.com/RT-Thread-packages/tinyusb>`_
 - **Mynewt** Due to the newt package build system, Mynewt examples are better to be on its `own repo <https://github.com/hathach/mynewt-tinyusb-example>`_
 
 Local Docs
