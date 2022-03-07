@@ -1,26 +1,11 @@
 /*
- * The MIT License (MIT)
+ * Copyright (c) 2006-2022, RT-Thread Development Team
  *
- * Copyright (c) 2019 Ha Thach (tinyusb.org)
+ * SPDX-License-Identifier: Apache-2.0
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2021-10-20     tfx2001      first version
  */
 
 #include "tusb.h"
@@ -29,7 +14,7 @@
 //--------------------------------------------------------------------+
 // Device Descriptors
 //--------------------------------------------------------------------+
-tusb_desc_device_t const desc_device =
+static tusb_desc_device_t const desc_device =
 {
         .bLength            = sizeof(tusb_desc_device_t),
         .bDescriptorType    = TUSB_DESC_DEVICE,
@@ -52,38 +37,9 @@ tusb_desc_device_t const desc_device =
 
 // Invoked when received GET DEVICE DESCRIPTOR
 // Application return pointer to descriptor
-uint8_t const *tud_descriptor_device_cb(void)
+TU_ATTR_WEAK uint8_t const *tud_descriptor_device_cb(void)
 {
     return (uint8_t const *) &desc_device;
-}
-
-//--------------------------------------------------------------------+
-// HID Report Descriptor
-//--------------------------------------------------------------------+
-
-uint8_t const desc_hid_report[] =
-{
-#ifdef PKG_TINYUSB_DEVICE_HID_KEYBOARD
-    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID_KEYBOARD)),
-#endif
-#ifdef PKG_TINYUSB_DEVICE_HID_MOUSE
-    TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID_MOUSE)),
-#endif
-#ifdef PKG_TINYUSB_DEVICE_HID_CONSUMER
-    TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(REPORT_ID_CONSUMER_CONTROL)),
-#endif
-#ifdef PKG_TINYUSB_DEVICE_HID_GAMEPAD
-    TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID_GAMEPAD))
-#endif
-};
-
-// Invoked when received GET HID REPORT DESCRIPTOR
-// Application return pointer to descriptor
-// Descriptor contents must exist long enough for transfer to complete
-uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance)
-{
-    (void)instance;
-    return desc_hid_report;
 }
 
 //--------------------------------------------------------------------+
@@ -119,7 +75,7 @@ enum
 
 #define EPNUM_HID         0x84
 
-uint8_t const desc_fs_configuration[] =
+static uint8_t const desc_fs_configuration[] =
 {
     TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
 #if CFG_TUD_CDC
@@ -136,7 +92,7 @@ uint8_t const desc_fs_configuration[] =
 // Invoked when received GET CONFIGURATION DESCRIPTOR
 // Application return pointer to descriptor
 // Descriptor contents must exist long enough for transfer to complete
-uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
+TU_ATTR_WEAK uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 {
     (void) index; // for multiple configurations
 
@@ -148,22 +104,24 @@ uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 //--------------------------------------------------------------------+
 
 // array of pointer to string descriptors
-char const *string_desc_arr[] =
+char _serial_number[25] = "123456";
+
+static char *string_desc_arr[] =
 {
-        (const char[]) {0x09, 0x04},   // 0: is supported language is English (0x0409)
-        "TinyUSB",                     // 1: Manufacturer
-        "TinyUSB Device",              // 2: Product
-        "123456",                      // 3: Serials, should use chip ID
-        "TinyUSB CDC",
-        "TinyUSB MSC",
-        "TinyUSB HID",
+    (char[]) {0x09, 0x04},        // 0: is supported language is English (0x0409)
+    PKG_TINYUSB_DEVICE_MANUFACTURER,    // 1: Manufacturer
+    PKG_TINYUSB_DEVICE_PRODUCT,         // 2: Product
+    _serial_number,                    // 3: Serials, should use chip ID
+    PKG_TINYUSB_DEVICE_CDC_STRING,
+    PKG_TINYUSB_DEVICE_MSC_STRING,
+    PKG_TINYUSB_DEVICE_HID_STRING,
 };
 
 static uint16_t desc_str[32];
 
 // Invoked when received GET STRING DESCRIPTOR request
 // Application return pointer to descriptor, whose contents must exist long enough for transfer to complete
-uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
+TU_ATTR_WEAK uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
 {
     (void) langid;
 
@@ -198,4 +156,33 @@ uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t langid)
     desc_str[0] = (TUSB_DESC_STRING << 8) | (2 * chr_count + 2);
 
     return desc_str;
+}
+
+//--------------------------------------------------------------------+
+// HID Report Descriptor
+//--------------------------------------------------------------------+
+
+static uint8_t const desc_hid_report[] =
+{
+#ifdef PKG_TINYUSB_DEVICE_HID_KEYBOARD
+    TUD_HID_REPORT_DESC_KEYBOARD(HID_REPORT_ID(REPORT_ID_KEYBOARD)),
+#endif
+#ifdef PKG_TINYUSB_DEVICE_HID_MOUSE
+    TUD_HID_REPORT_DESC_MOUSE(HID_REPORT_ID(REPORT_ID_MOUSE)),
+#endif
+#ifdef PKG_TINYUSB_DEVICE_HID_CONSUMER
+    TUD_HID_REPORT_DESC_CONSUMER(HID_REPORT_ID(REPORT_ID_CONSUMER_CONTROL)),
+#endif
+#ifdef PKG_TINYUSB_DEVICE_HID_GAMEPAD
+    TUD_HID_REPORT_DESC_GAMEPAD(HID_REPORT_ID(REPORT_ID_GAMEPAD))
+#endif
+};
+
+// Invoked when received GET HID REPORT DESCRIPTOR
+// Application return pointer to descriptor
+// Descriptor contents must exist long enough for transfer to complete
+TU_ATTR_WEAK uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance)
+{
+    (void)instance;
+    return desc_hid_report;
 }
