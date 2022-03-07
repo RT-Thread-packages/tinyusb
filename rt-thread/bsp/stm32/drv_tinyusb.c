@@ -11,6 +11,28 @@
 #include <tusb.h>
 #include <drv_config.h>
 
+#define to_hex_digit(x) ((x) < 10 ? '0' + (x) : 'A' + (x) - 10)
+
+static void _write_hex_chars(char *dest, uint32_t val)
+{
+    for (int i = 8; i > 0; i--)
+    {
+        uint8_t x = val >> 28u;
+        *dest++ = to_hex_digit(x);
+        val <<= 4u;
+    }
+}
+
+/* USB device serial number */
+extern char _serial_number[25];
+
+static void _generate_serial_number()
+{
+    _write_hex_chars(_serial_number, HAL_GetUIDw0());
+    _write_hex_chars(_serial_number + 8, HAL_GetUIDw1());
+    _write_hex_chars(_serial_number + 16, HAL_GetUIDw2());
+}
+
 int tusb_board_init(void)
 {
     PCD_HandleTypeDef hpcd;
@@ -29,6 +51,9 @@ int tusb_board_init(void)
     /* USB interrupt Init */
     HAL_NVIC_SetPriority(USBD_IRQ_TYPE, 2, 0);
     HAL_NVIC_EnableIRQ(USBD_IRQ_TYPE);
+
+    _generate_serial_number();
+
     return 0;
 }
 

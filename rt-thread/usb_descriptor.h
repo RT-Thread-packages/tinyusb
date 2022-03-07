@@ -1,5 +1,15 @@
-#ifndef USB_DESCRIPTORS_H_
-#define USB_DESCRIPTORS_H_
+/*
+ * Copyright (c) 2006-2022, RT-Thread Development Team
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Change Logs:
+ * Date           Author       Notes
+ * 2022-01-15     tfx2001      first version
+ */
+
+#ifndef _USB_DESCRIPTORS_H_
+#define _USB_DESCRIPTORS_H_
 
 #include <rtconfig.h>
 
@@ -21,4 +31,4 @@ enum
     REPORT_ID_COUNT
 };
 
-#endif /* USB_DESCRIPTORS_H_ */
+#endif /* _USB_DESCRIPTORS_H_ */
