@@ -46,46 +46,17 @@ TU_ATTR_WEAK uint8_t const *tud_descriptor_device_cb(void)
 // Configuration Descriptor
 //--------------------------------------------------------------------+
 
-enum
-{
-#if CFG_TUD_CDC
-    ITF_NUM_CDC = 0,
-    ITF_NUM_CDC_DATA,
-#endif
-#if CFG_TUD_MSC
-    ITF_NUM_MSC,
-#endif
-#if CFG_TUD_HID
-    ITF_NUM_HID,
-#endif
-    ITF_NUM_TOTAL
-};
-
-#define CONFIG_TOTAL_LEN    (TUD_CONFIG_DESC_LEN + \
-                             TUD_MSC_DESC_LEN * CFG_TUD_MSC + \
-                             TUD_CDC_DESC_LEN * CFG_TUD_CDC + \
-                             TUD_HID_DESC_LEN * CFG_TUD_HID)
-
-#define EPNUM_CDC_NOTIF     0x81
-#define EPNUM_CDC_OUT       0x02
-#define EPNUM_CDC_IN        0x82
-
-#define EPNUM_MSC_OUT       0x03
-#define EPNUM_MSC_IN        0x83
-  
-#define EPNUM_HID           0x84
-
 static uint8_t const desc_fs_configuration[] =
 {
-    TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+    TUD_CONFIG_DESCRIPTOR(1, ITF_NUM_TOTAL, 0, CONFIG_TOTAL_LEN, TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, PKG_TINYUSB_DEVICE_CURRENT),
 #if CFG_TUD_CDC
-    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, 4, EPNUM_CDC_NOTIF, 8, EPNUM_CDC_OUT, EPNUM_CDC_IN, 64),
+    TUD_CDC_DESCRIPTOR(ITF_NUM_CDC, 4, EPNUM_CDC_NOTIF, 8, EPNUM_CDC_OUT, EPNUM_CDC_IN, CFG_TUD_CDC_EP_BUFSIZE),
 #endif
 #if CFG_TUD_MSC
-    TUD_MSC_DESCRIPTOR(ITF_NUM_MSC, 5, EPNUM_MSC_OUT, EPNUM_MSC_IN, 64),
+    TUD_MSC_DESCRIPTOR(ITF_NUM_MSC, 5, EPNUM_MSC_OUT, EPNUM_MSC_IN, TUD_OPT_HIGH_SPEED ? 512 : 64),
 #endif
 #if CFG_TUD_HID
-    TUD_HID_DESCRIPTOR(ITF_NUM_HID, 6, HID_ITF_PROTOCOL_NONE, sizeof(desc_hid_report), EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, 5)
+    TUD_HID_DESCRIPTOR(ITF_NUM_HID, 6, HID_ITF_PROTOCOL_NONE, sizeof(desc_hid_report), EPNUM_HID, CFG_TUD_HID_EP_BUFSIZE, PKG_TINYUSB_DEVICE_HID_INT)
 #endif
 };
 

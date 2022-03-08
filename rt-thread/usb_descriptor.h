@@ -15,6 +15,35 @@
 
 enum
 {
+#if CFG_TUD_CDC
+    ITF_NUM_CDC = 0,
+    ITF_NUM_CDC_DATA,
+#endif
+#if CFG_TUD_MSC
+    ITF_NUM_MSC,
+#endif
+#if CFG_TUD_HID
+    ITF_NUM_HID,
+#endif
+    ITF_NUM_TOTAL
+};
+
+#define CONFIG_TOTAL_LEN    (TUD_CONFIG_DESC_LEN + \
+                             TUD_MSC_DESC_LEN * CFG_TUD_MSC + \
+                             TUD_CDC_DESC_LEN * CFG_TUD_CDC + \
+                             TUD_HID_DESC_LEN * CFG_TUD_HID)
+
+#define EPNUM_CDC_NOTIF     0x81
+#define EPNUM_CDC_OUT       0x02
+#define EPNUM_CDC_IN        0x82
+
+#define EPNUM_MSC_OUT       0x03
+#define EPNUM_MSC_IN        0x83
+  
+#define EPNUM_HID           0x84
+
+enum
+{
     REPORT_ID_BEGIN = 0,
 #ifdef PKG_TINYUSB_DEVICE_HID_KEYBOARD
     REPORT_ID_KEYBOARD,
