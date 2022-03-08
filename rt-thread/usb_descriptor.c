@@ -16,23 +16,23 @@
 //--------------------------------------------------------------------+
 static tusb_desc_device_t const desc_device =
 {
-        .bLength            = sizeof(tusb_desc_device_t),
-        .bDescriptorType    = TUSB_DESC_DEVICE,
-        .bcdUSB             = 0x0200,
-        .bDeviceClass       = 0x00,
-        .bDeviceSubClass    = 0x00,
-        .bDeviceProtocol    = 0x00,
-        .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
+    .bLength            = sizeof(tusb_desc_device_t),
+    .bDescriptorType    = TUSB_DESC_DEVICE,
+    .bcdUSB             = 0x0200,
+    .bDeviceClass       = 0x00,
+    .bDeviceSubClass    = 0x00,
+    .bDeviceProtocol    = 0x00,
+    .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
 
-        .idVendor           = PKG_TINYUSB_DEVICE_VID,
-        .idProduct          = PKG_TINYUSB_DEVICE_PID,
-        .bcdDevice          = 0x0100,
+    .idVendor           = PKG_TINYUSB_DEVICE_VID,
+    .idProduct          = PKG_TINYUSB_DEVICE_PID,
+    .bcdDevice          = 0x0100,
 
-        .iManufacturer      = 0x01,
-        .iProduct           = 0x02,
-        .iSerialNumber      = 0x03,
+    .iManufacturer      = 0x01,
+    .iProduct           = 0x02,
+    .iSerialNumber      = 0x03,
 
-        .bNumConfigurations = 0x01
+    .bNumConfigurations = 0x01
 };
 
 // Invoked when received GET DEVICE DESCRIPTOR
@@ -66,14 +66,14 @@ enum
                              TUD_CDC_DESC_LEN * CFG_TUD_CDC + \
                              TUD_HID_DESC_LEN * CFG_TUD_HID)
 
-#define EPNUM_CDC_NOTIF   0x81
-#define EPNUM_CDC_OUT     0x02
-#define EPNUM_CDC_IN      0x82
+#define EPNUM_CDC_NOTIF     0x81
+#define EPNUM_CDC_OUT       0x02
+#define EPNUM_CDC_IN        0x82
 
-#define EPNUM_MSC_OUT     0x03
-#define EPNUM_MSC_IN      0x83
-
-#define EPNUM_HID         0x84
+#define EPNUM_MSC_OUT       0x03
+#define EPNUM_MSC_IN        0x83
+  
+#define EPNUM_HID           0x84
 
 static uint8_t const desc_fs_configuration[] =
 {
@@ -104,18 +104,28 @@ TU_ATTR_WEAK uint8_t const *tud_descriptor_configuration_cb(uint8_t index)
 //--------------------------------------------------------------------+
 
 // array of pointer to string descriptors
-char _serial_number[25] = "123456";
+static char _serial_number[32] = "123456";
 
 static char *string_desc_arr[] =
 {
-    (char[]) {0x09, 0x04},        // 0: is supported language is English (0x0409)
+    (char[]) {0x09, 0x04},              // 0: is supported language is English (0x0409)
     PKG_TINYUSB_DEVICE_MANUFACTURER,    // 1: Manufacturer
     PKG_TINYUSB_DEVICE_PRODUCT,         // 2: Product
-    _serial_number,                    // 3: Serials, should use chip ID
+    _serial_number,                     // 3: Serials, should use chip ID
     PKG_TINYUSB_DEVICE_CDC_STRING,
     PKG_TINYUSB_DEVICE_MSC_STRING,
     PKG_TINYUSB_DEVICE_HID_STRING,
 };
+
+void tud_descriptor_set_serial(char *serial_number, uint8_t length)
+{
+    if (length > 31) {
+        length = 31;
+    }
+
+    memcpy(_serial_number, serial_number, length);
+    _serial_number[length] = '\0';
+}
 
 static uint16_t desc_str[32];
 

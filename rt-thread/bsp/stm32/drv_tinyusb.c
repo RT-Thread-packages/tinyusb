@@ -13,7 +13,9 @@
 
 #define to_hex_digit(x) ((x) < 10 ? '0' + (x) : 'A' + (x) - 10)
 
-static void _write_hex_chars(char *dest, uint32_t val)
+extern void tud_descriptor_set_serial(char *serial_number, uint8_t length);
+
+static void write_hex_chars(char *dest, uint32_t val)
 {
     for (int i = 8; i > 0; i--)
     {
@@ -23,14 +25,15 @@ static void _write_hex_chars(char *dest, uint32_t val)
     }
 }
 
-/* USB device serial number */
-extern char _serial_number[25];
-
-static void _generate_serial_number()
+static void generate_serial_number(void)
 {
-    _write_hex_chars(_serial_number, HAL_GetUIDw0());
-    _write_hex_chars(_serial_number + 8, HAL_GetUIDw1());
-    _write_hex_chars(_serial_number + 16, HAL_GetUIDw2());
+    char serial_number[32];
+
+    write_hex_chars(serial_number, HAL_GetUIDw0());
+    write_hex_chars(serial_number + 8, HAL_GetUIDw1());
+    write_hex_chars(serial_number + 16, HAL_GetUIDw2());
+
+    tud_descriptor_set_serial(serial_number, 24);
 }
 
 int tusb_board_init(void)
@@ -52,7 +55,7 @@ int tusb_board_init(void)
     HAL_NVIC_SetPriority(USBD_IRQ_TYPE, 2, 0);
     HAL_NVIC_EnableIRQ(USBD_IRQ_TYPE);
 
-    _generate_serial_number();
+    generate_serial_number();
 
     return 0;
 }
