@@ -33,14 +33,14 @@ enum
                              TUD_CDC_DESC_LEN * CFG_TUD_CDC + \
                              TUD_HID_DESC_LEN * CFG_TUD_HID)
 
-#define EPNUM_CDC_NOTIF     0x81
-#define EPNUM_CDC_OUT       0x02
-#define EPNUM_CDC_IN        0x82
+#define EPNUM_CDC_NOTIF     (0x80 | PKG_TINYUSB_DEVICE_CDC_EPNUM_NOTIF)
+#define EPNUM_CDC_OUT       PKG_TINYUSB_DEVICE_CDC_EPNUM
+#define EPNUM_CDC_IN        (0x80 | PKG_TINYUSB_DEVICE_CDC_EPNUM)
 
-#define EPNUM_MSC_OUT       0x03
-#define EPNUM_MSC_IN        0x83
+#define EPNUM_MSC_OUT       PKG_TINYUSB_DEVICE_MSC_EPNUM
+#define EPNUM_MSC_IN        (0x80 | PKG_TINYUSB_DEVICE_MSC_EPNUM)
   
-#define EPNUM_HID           0x84
+#define EPNUM_HID           (0x80 | PKG_TINYUSB_DEVICE_HID_EPNUM)
 
 enum
 {
