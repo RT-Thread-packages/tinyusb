@@ -117,7 +117,7 @@ static char *string_desc_arr[] =
     PKG_TINYUSB_DEVICE_HID_STRING,
 };
 
-void tud_descriptor_set_serial(char *serial_number, uint8_t length)
+TU_ATTR_WEAK void tud_descriptor_set_serial(char *serial_number, uint8_t length)
 {
     if (length > 31) {
         length = 31;
