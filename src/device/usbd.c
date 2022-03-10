@@ -306,6 +306,7 @@ static char const* const _usbd_event_str[DCD_EVENT_COUNT] =
   "Invalid"        ,
   "Bus Reset"      ,
   "Unplugged"      ,
+  "Plugged"        ,
   "SOF"            ,
   "Suspend"        ,
   "Resume"         ,
@@ -355,6 +356,11 @@ void usbd_driver_print_control_complete_name(usbd_control_xfer_cb_t callback)
 tusb_speed_t tud_speed_get(void)
 {
   return (tusb_speed_t) _usbd_dev.speed;
+}
+
+void tud_speed_set(tusb_speed_t speed)
+{
+    _usbd_dev.speed = speed;
 }
 
 bool tud_connected(void)
@@ -519,6 +525,11 @@ void tud_task (void)
 
         // invoke callback
         if (tud_umount_cb) tud_umount_cb();
+      break;
+
+      case DCD_EVENT_PLUGGED:
+        TU_LOG2(": %s Speed\r\n", _tusb_speed_str[event.plugged.speed]);
+        tud_speed_set(event.plugged.speed);
       break;
 
       case DCD_EVENT_SETUP_RECEIVED:

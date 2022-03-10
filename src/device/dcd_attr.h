@@ -212,6 +212,8 @@
 #elif TU_CHECK_MCU(OPT_MCU_F1C100S)
   #define DCD_ATTR_ENDPOINT_MAX   4
 
+#elif TU_CHECK_MCU(OPT_MCU_HPM)
+  #define DCD_ATTR_ENDPOINT_MAX   8
 #else
   #warning "DCD_ATTR_ENDPOINT_MAX is not defined for this MCU, default to 8"
   #define DCD_ATTR_ENDPOINT_MAX   8

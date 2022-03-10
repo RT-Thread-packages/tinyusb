@@ -101,8 +101,12 @@
  *------------------------------------------------------------------*/
 
 // Helper to implement optional parameter for TU_VERIFY Macro family
+#define GET_1ST_ARG(arg1, ...)                    arg1
+#define GET_2ND_ARG(arg1, arg2, ...)              arg2
 #define GET_3RD_ARG(arg1, arg2, arg3, ...)        arg3
 #define GET_4TH_ARG(arg1, arg2, arg3, arg4, ...)  arg4
+#define GET_1ST_2ND_ARGS(...)     GET_1ST_ARG(__VA_ARGS__), GET_2ND_ARG(__VA_ARGS__)
+#define GET_3RD_4TH_ARGS(...)     GET_3RD_ARG(__VA_ARGS__), GET_4TH_ARG(__VA_ARGS__)
 
 /*------------- Generator for TU_VERIFY and TU_VERIFY_HDLR -------------*/
 #define TU_VERIFY_DEFINE(_cond, _handler, _ret)  do            \

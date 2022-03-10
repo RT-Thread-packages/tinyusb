@@ -62,7 +62,11 @@ uint8_t tud_hid_n_interface_protocol(uint8_t instance);
 uint8_t tud_hid_n_get_protocol(uint8_t instance);
 
 // Send report to host
-bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, uint8_t len);
+#if (CFG_TUD_HID_EP_BUFSIZE >= 256)
+    bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, uint16_t len);
+#else
+    bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, uint8_t len);
+#endif
 
 // KEYBOARD: convenient helper to send keyboard report if application
 // use template layout report as defined by hid_keyboard_report_t
@@ -82,7 +86,11 @@ bool tud_hid_n_gamepad_report(uint8_t instance, uint8_t report_id, int8_t x, int
 static inline bool    tud_hid_ready(void);
 static inline uint8_t tud_hid_interface_protocol(void);
 static inline uint8_t tud_hid_get_protocol(void);
+#if  (CFG_TUD_HID_EP_BUFSIZE >= 256)
+    static inline bool tud_hid_report(uint8_t report_id, void const* report, uint16_t len);
+#else
 static inline bool    tud_hid_report(uint8_t report_id, void const* report, uint8_t len);
+#endif
 static inline bool    tud_hid_keyboard_report(uint8_t report_id, uint8_t modifier, uint8_t keycode[6]);
 static inline bool    tud_hid_mouse_report(uint8_t report_id, uint8_t buttons, int8_t x, int8_t y, int8_t vertical, int8_t horizontal);
 static inline bool    tud_hid_gamepad_report(uint8_t report_id, int8_t x, int8_t y, int8_t z, int8_t rz, int8_t rx, int8_t ry, uint8_t hat, uint32_t buttons);
@@ -137,10 +145,17 @@ static inline uint8_t tud_hid_get_protocol(void)
   return tud_hid_n_get_protocol(0);
 }
 
+#if  (CFG_TUD_HID_EP_BUFSIZE >= 256)
+static inline bool tud_hid_report(uint8_t report_id, void const* report, uint16_t len)
+{
+  return tud_hid_n_report(0, report_id, report, len);
+}
+#else
 static inline bool tud_hid_report(uint8_t report_id, void const* report, uint8_t len)
 {
   return tud_hid_n_report(0, report_id, report, len);
 }
+#endif
 
 static inline bool tud_hid_keyboard_report(uint8_t report_id, uint8_t modifier, uint8_t keycode[6])
 {
@@ -355,6 +370,29 @@ static inline bool  tud_hid_gamepad_report(uint8_t report_id, int8_t x, int8_t y
 // HID Generic Input & Output
 // - 1st parameter is report size (mandatory)
 // - 2nd parameter is report id HID_REPORT_ID(n) (optional)
+#if (CFG_TUSB_REPORT_ID_COUNT == 2)
+  #define TUD_HID_REPORT_DESC_GENERIC_INOUT(report_size, ...) \
+    HID_USAGE_PAGE_N ( HID_USAGE_PAGE_VENDOR, 2   ),\
+    HID_USAGE        ( 0x01                       ),\
+    HID_COLLECTION   ( HID_COLLECTION_APPLICATION ),\
+      GET_1ST_2ND_ARGS(__VA_ARGS__), \
+      /* Input */ \
+      HID_USAGE       ( 0x02                                   ),\
+      HID_LOGICAL_MIN ( 0x00                                   ),\
+      HID_LOGICAL_MAX ( 0xff                                   ),\
+      HID_REPORT_SIZE ( 8                                      ),\
+      HID_REPORT_COUNT_N( report_size, 2                       ),\
+      HID_INPUT       ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ),\
+      /* Output */ \
+      GET_3RD_4TH_ARGS(__VA_ARGS__), \
+      HID_USAGE       ( 0x03                                   ),\
+      HID_LOGICAL_MIN ( 0x00                                   ),\
+      HID_LOGICAL_MAX ( 0xff                                   ),\
+      HID_REPORT_SIZE ( 8                                      ),\
+      HID_REPORT_COUNT_N( report_size, 2                       ),\
+      HID_OUTPUT      ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE ),\
+    HID_COLLECTION_END
+#elif (CFG_TUSB_REPORT_ID_COUNT < 2)
 #define TUD_HID_REPORT_DESC_GENERIC_INOUT(report_size, ...) \
     HID_USAGE_PAGE_N ( HID_USAGE_PAGE_VENDOR, 2   ),\
     HID_USAGE        ( 0x01                       ),\
@@ -375,8 +413,8 @@ static inline bool  tud_hid_gamepad_report(uint8_t report_id, int8_t x, int8_t y
       HID_REPORT_SIZE ( 8                                       ),\
       HID_REPORT_COUNT( report_size                             ),\
       HID_OUTPUT      ( HID_DATA | HID_VARIABLE | HID_ABSOLUTE  ),\
-    HID_COLLECTION_END \
-
+    HID_COLLECTION_END
+#endif
 //--------------------------------------------------------------------+
 // Internal Class Driver API
 //--------------------------------------------------------------------+

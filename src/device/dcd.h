@@ -53,6 +53,7 @@ typedef enum
   DCD_EVENT_INVALID = 0,
   DCD_EVENT_BUS_RESET,
   DCD_EVENT_UNPLUGGED,
+  DCD_EVENT_PLUGGED,
   DCD_EVENT_SOF,
   DCD_EVENT_SUSPEND, // TODO LPM Sleep L1 support
   DCD_EVENT_RESUME,
@@ -77,6 +78,11 @@ typedef struct TU_ATTR_ALIGNED(4)
     struct {
       tusb_speed_t speed;
     } bus_reset;
+
+    // Plugged
+    struct {
+      tusb_speed_t speed;
+    } plugged;
 
     // SETUP_RECEIVED
     tusb_control_request_t setup_received;

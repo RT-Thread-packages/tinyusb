@@ -21,7 +21,11 @@ if GetDepend(["SOC_FAMILY_STM32"]):
 if GetDepend(["SOC_NRF52840"]):
     src += ["../src/portable/nordic/nrf5x/dcd_nrf5x.c",
             "bsp/nrf5x/drv_tinyusb.c"]
-    
+
+if GetDepend(["SOC_HPM6000"]):
+    src +=  ["bsp/hpmicro/drv_tinyusb.c",
+    		 "../src/portable/hpm/dcd_hpm.c"]            
+                
 # Device class
 if GetDepend(["PKG_TINYUSB_DEVICE_CDC"]):
     src += ["../src/class/cdc/cdc_device.c"]

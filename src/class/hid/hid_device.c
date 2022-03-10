@@ -80,6 +80,26 @@ bool tud_hid_n_ready(uint8_t instance)
   return tud_ready() && (ep_in != 0) && !usbd_edpt_busy(TUD_OPT_RHPORT, ep_in);
 }
 
+#if  (CFG_TUD_HID_EP_BUFSIZE >= 256)
+bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, uint16_t len)
+{
+  uint8_t const rhport = 0;
+  hidd_interface_t * p_hid = &_hidd_itf[instance];
+  TU_VERIFY( usbd_edpt_claim(rhport, p_hid->ep_in) );
+  if (report_id)
+  {
+    len = tu_min16(len, CFG_TUD_HID_EP_BUFSIZE-1);
+    p_hid->epin_buf[0] = report_id;
+    memcpy(p_hid->epin_buf+1, report, len);
+    len++;
+  }else
+  {
+    len = tu_min16(len, CFG_TUD_HID_EP_BUFSIZE);
+    memcpy(p_hid->epin_buf, report, len);
+  }
+  return usbd_edpt_xfer(TUD_OPT_RHPORT, p_hid->ep_in, p_hid->epin_buf, len);
+}
+#else
 bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, uint8_t len)
 {
   uint8_t const rhport = 0;
@@ -105,6 +125,7 @@ bool tud_hid_n_report(uint8_t instance, uint8_t report_id, void const* report, u
 
   return usbd_edpt_xfer(TUD_OPT_RHPORT, p_hid->ep_in, p_hid->epin_buf, len);
 }
+#endif
 
 uint8_t tud_hid_n_interface_protocol(uint8_t instance)
 {

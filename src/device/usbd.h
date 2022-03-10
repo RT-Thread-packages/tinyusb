@@ -56,6 +56,9 @@ extern void dcd_int_handler(uint8_t rhport);
 // Get current bus speed
 tusb_speed_t tud_speed_get(void);
 
+// Adjust endpoint's attributes matched with the current bus speed
+void tud_speed_set(tusb_speed_t speed);
+
 // Check if device is connected (may not mounted/configured yet)
 // True if just got out of Bus Reset and received the very first data from host
 bool tud_connected(void);
