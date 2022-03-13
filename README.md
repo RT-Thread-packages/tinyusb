@@ -92,23 +92,6 @@ Host Stack
 -   Mass Storage Class (MSC)
 -   Hub currently only supports 1 level of hub (due to my laziness)
 
-OS Abstraction layer
-====================
-
-TinyUSB is completely thread-safe by pushing all Interrupt Service
-Request (ISR) events into a central queue, then processing them later in
-the non-ISR context task function. It also uses semaphore/mutex to
-access shared resources such as Communication Device Class (CDC) FIFO.
-Therefore the stack needs to use some of the OS's basic APIs. Following
-OSes are already supported out of the box.
-
--   **No OS**
--   **FreeRTOS**
--   **Mynewt** Due to the newt package build system, Mynewt examples are
-    better to be on its [own
-    repo](<https://github.com/hathach/mynewt-tinyusb-example>)
--   **RT-Thread**
-
 Local Docs
 ==========
 
