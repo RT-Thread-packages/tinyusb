@@ -43,7 +43,7 @@ extern "C" {
 // DEBUG CONFIGURATION
 //--------------------------------------------------------------------
 #ifdef CFG_TUSB_DEBUG
-#define CFG_TUSB_DEBUG_PRINTF rt_kprintf
+#define CFG_TUSB_DEBUG_PRINTF printf
 #endif /* CFG_TUSB_DEBUG */
 
 #ifndef BOARD_DEVICE_RHPORT_NUM
