@@ -288,7 +288,7 @@
   #define CFG_TUSB_OS_INC_PATH
 #endif
 
-// mutex is only needed for RTOS
+// mutex is only needed for RTOS TODO also required with multiple core MCUs
 #define TUSB_OPT_MUTEX    (CFG_TUSB_OS != OPT_OS_NONE)
 
 //--------------------------------------------------------------------
@@ -393,6 +393,10 @@
 
 #ifndef CFG_TUH_VENDOR
 #define CFG_TUH_VENDOR 0
+#endif
+
+#ifndef CFG_TUH_API_EDPT_XFER
+#define CFG_TUH_API_EDPT_XFER 0
 #endif
 
 //------------------------------------------------------------------
