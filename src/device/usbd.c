@@ -506,7 +506,7 @@ void tud_task (void)
       break;
 
       case DCD_EVENT_PLUGGED:
-        TU_LOG2(": %s Speed\r\n", _tusb_speed_str[event.plugged.speed]);
+        TU_LOG2(": %s Speed\r\n", tu_str_speed[event.plugged.speed]);
         tud_speed_set(event.plugged.speed);
       break;
 
