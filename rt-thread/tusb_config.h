@@ -21,12 +21,24 @@ extern "C" {
 // COMMON CONFIGURATION
 //--------------------------------------------------------------------
 
-#if  defined(SOC_SERIES_STM32F1)
+#if   defined(SOC_SERIES_STM32F0)
+#define CFG_TUSB_MCU    OPT_MCU_STM32F0
+#elif defined(SOC_SERIES_STM32F1)
 #define CFG_TUSB_MCU    OPT_MCU_STM32F1
+#elif defined(SOC_SERIES_STM32F2)
+#define CFG_TUSB_MCU    OPT_MCU_STM32F2
+#elif defined(SOC_SERIES_STM32F3)
+#define CFG_TUSB_MCU    OPT_MCU_STM32F3
 #elif defined(SOC_SERIES_STM32F4)
 #define CFG_TUSB_MCU    OPT_MCU_STM32F4
+#elif defined(SOC_SERIES_STM32F7)
+#define CFG_TUSB_MCU    OPT_MCU_STM32F7
 #elif defined(SOC_SERIES_STM32H7)
 #define CFG_TUSB_MCU    OPT_MCU_STM32H7
+#elif defined(SOC_SERIES_STM32L0)
+#define CFG_TUSB_MCU    OPT_MCU_STM32L0
+#elif defined(SOC_SERIES_STM32L1)
+#define CFG_TUSB_MCU    OPT_MCU_STM32L1
 #elif defined(SOC_SERIES_STM32L4)
 #define CFG_TUSB_MCU    OPT_MCU_STM32L4
 #elif defined(SOC_NRF52840)
