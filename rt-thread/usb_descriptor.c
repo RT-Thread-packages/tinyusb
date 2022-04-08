@@ -67,7 +67,7 @@ static uint8_t const desc_hid_report[] =
 // Descriptor contents must exist long enough for transfer to complete
 TU_ATTR_WEAK uint8_t const *tud_hid_descriptor_report_cb(uint8_t instance)
 {
-    (void)instance;
+    (void) instance;
     return desc_hid_report;
 }
 

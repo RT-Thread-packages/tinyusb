@@ -30,6 +30,10 @@ RT-Thread ENV 包管理器中的路径如下：
 然后让 RT-Thread 的包管理器自动更新，或者使用 `pkgs --update`
 命令更新包到 BSP 中。
 
+**注意：** 在 Keil MDK 中使用时，请选择 **ARM Clang** 编译器，或手动在编译选项中选中 **GNU Extensions**
+
+![MDK](./assets/mdk.png)
+
 ### 1.2、RT-Thread Studio
 
 在 RT-Thread Settings 中搜索 `TinyUSB` 即可将软件包添加至工程中。
@@ -47,9 +51,9 @@ RT-Thread ENV 包管理器中的路径如下：
 
 ### 2.2、设备类
 
--   通信设备类 (CDC)
--   大容量存储设备 (MSC)
--   人体学输入设备 (HID)
+- 通信设备类 (CDC)
+- 大容量存储设备 (MSC)
+- 人体学输入设备 (HID)
 
 3、Feedback
 -----------
