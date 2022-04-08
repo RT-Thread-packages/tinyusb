@@ -16,7 +16,9 @@ the non-ISR task function.
 Please take a look at the online
 [documentation](https://docs.tinyusb.org/).
 
-![](docs/assets/stack.svg)
+<figure>
+<img src="docs/assets/stack.svg" width="500" />
+</figure>
 
     .
     ├── docs            # Documentation
@@ -34,8 +36,11 @@ Supported MCUs
 
 The stack supports the following MCUs:
 
+-   **Allwinner:** F1C100s/F1C200s
+-   **Broadcom:** BCM2837, BCM2711
 -   **Dialog:** DA1469x
 -   **Espressif:** ESP32-S2, ESP32-S3
+-   **GigaDevice:** GD32VF103
 -   **Infineon:** XMC4500
 -   **MicroChip:** SAMD11, SAMD21, SAMD51, SAME5x, SAMG55, SAML21,
     SAML22, SAME7x
@@ -43,14 +48,15 @@ The stack supports the following MCUs:
 -   **Nuvoton:** NUC120, NUC121/NUC125, NUC126, NUC505
 -   **NXP:**
     -   iMX RT Series: RT1011, RT1015, RT1021, RT1052, RT1062, RT1064
-    -   Kinetis: KL25, K32L2Bxx
+    -   Kinetis: KL25, K32L2
     -   LPC Series: 11u, 13, 15, 17, 18, 40, 43, 51u, 54, 55
 -   **Raspberry Pi:** RP2040
--   **Renesas:** RX63N, RX65N
+-   **Renesas:** RX63N, RX65N, RX72N
 -   **Silabs:** EFM32GG
 -   **Sony:** CXD56
--   **ST:** STM32 series: L0, L1, L4, L4+, F0, F1, F2, F3, F4, F7, H7
--   **TI:** MSP430
+-   **ST:** STM32 series: F0, F1, F2, F3, F4, F7, H7, G4, L0, L1, L4,
+    L4+
+-   **TI:** MSP430, MSP432E4, TM4C123
 -   **ValentyUSB:** eptri
 
 Here is the list of [Supported Devices](docs/reference/supported.rst)
@@ -66,7 +72,7 @@ wakeup. The following device classes are supported:
 -   Audio Class 2.0 (UAC2)
 -   Bluetooth Host Controller Interface (BTH HCI)
 -   Communication Device Class (CDC)
--   Device Firmware Update (DFU): DFU mode (WIP) and Runtinme
+-   Device Firmware Update (DFU): DFU mode (WIP) and Runtime
 -   Human Interface Device (HID): Generic (In & Out), Keyboard, Mouse,
     Gamepad etc ...
 -   Mass Storage Class (MSC): with multiple LUNs
@@ -80,10 +86,10 @@ wakeup. The following device classes are supported:
     without INF file.
 -   [WebUSB](https://github.com/WICG/webusb) with vendor-specific class
 
-If you have a special requirement, usbd\_app\_driver\_get\_cb() can be
-used to write your own class driver without modifying the stack. Here is
-how the RPi team added their reset interface
-[raspberrypi/pico-sdk\#197](<https://github.com/raspberrypi/pico-sdk/pull/197>)
+If you have a special requirement, `usbd_app_driver_get_cb()` can be used to write
+your own class driver without modifying the stack. Here is how the RPi
+team added their reset interface
+[raspberrypi/pico-sdk#197](https://github.com/raspberrypi/pico-sdk/pull/197)
 
 Host Stack
 ==========
@@ -104,10 +110,11 @@ OSes are already supported out of the box.
 
 -   **No OS**
 -   **FreeRTOS**
+-   [RT-Thread](https://github.com/RT-Thread/rt-thread):
+    [repo](https://github.com/RT-Thread-packages/tinyusb)
 -   **Mynewt** Due to the newt package build system, Mynewt examples are
     better to be on its [own
-    repo](<https://github.com/hathach/mynewt-tinyusb-example>)
--   **RT-Thread**
+    repo](https://github.com/hathach/mynewt-tinyusb-example)
 
 Local Docs
 ==========
