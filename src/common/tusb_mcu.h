@@ -266,6 +266,11 @@
 #elif TU_CHECK_MCU(OPT_MCU_F1C100S)
   #define TUP_DCD_ENDPOINT_MAX    4
 
+//------------ HPMicro -------------//
+#elif TU_CHECK_MCU(OPT_MCU_HPM)
+  #define TUP_DCD_ENDPOINT_MAX    8
+  #define TUP_RHPORT_HIGHSPEED    0x01
+
 #endif
 
 //--------------------------------------------------------------------+
