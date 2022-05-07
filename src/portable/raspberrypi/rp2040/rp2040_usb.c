@@ -50,10 +50,6 @@ static void _hw_endpoint_start_next_buffer(struct hw_endpoint *ep);
 //--------------------------------------------------------------------+
 //
 //--------------------------------------------------------------------+
-int tusb_board_init(void)
-{
-  rp2040_usb_init();
-}
 
 void rp2040_usb_init(void)
 {
