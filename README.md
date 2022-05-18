@@ -1,4 +1,6 @@
-# TinyUSB for RT-Thread | [中文文档](rt-thread/README_ZH.md)
+# TinyUSB for RT-Thread
+
+### [中文文档](https://www.rt-thread.org/document/site/#/rt-thread-version/rt-thread-standard/packages-manual/tinyusb-docs/introduction)
 
 ![tinyusb](docs/assets/logo.svg)
 
