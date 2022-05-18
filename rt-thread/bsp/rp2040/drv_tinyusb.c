@@ -8,11 +8,7 @@
  * 2022-05-07     Lishuo       first version
  */
 
-#include <tusb.h>
-#include "board.h"
-
 int tusb_board_init(void)
 {
-    rp2040_usb_init();
     return 0;
 }
