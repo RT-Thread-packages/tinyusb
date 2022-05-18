@@ -26,6 +26,11 @@ if GetDepend(["SOC_HPM6000"]):
     src +=  ["bsp/hpmicro/drv_tinyusb.c",
     		 "../src/portable/hpm/dcd_hpm.c"]            
                 
+if GetDepend(["SOC_RP2040"]):
+    src += ["bsp/rp2040/drv_tinyusb.c",
+            "../src/portable/raspberrypi/rp2040/rp2040_usb.c",
+            "../src/portable/raspberrypi/rp2040/dcd_rp2040.c"]
+
 # Device class
 if GetDepend(["PKG_TINYUSB_DEVICE_CDC"]):
     src += ["../src/class/cdc/cdc_device.c"]
