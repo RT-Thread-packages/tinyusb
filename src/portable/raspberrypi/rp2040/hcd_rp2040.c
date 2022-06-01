@@ -27,7 +27,7 @@
 
 #include "tusb_option.h"
 
-#if CFG_TUH_ENABLED && CFG_TUSB_MCU == OPT_MCU_RP2040
+#if CFG_TUH_ENABLED && (CFG_TUSB_MCU == OPT_MCU_RP2040) && !CFG_TUH_RPI_PIO_USB
 
 #include "pico.h"
 #include "rp2040_usb.h"
@@ -40,7 +40,8 @@
 #include "host/hcd.h"
 #include "host/usbh.h"
 
-#define ROOT_PORT 0
+// port 0 is native USB port, other is counted as software PIO
+#define RHPORT_NATIVE 0
 
 //--------------------------------------------------------------------+
 // Low level rp2040 controller functions
@@ -185,11 +186,11 @@ static void hcd_rp2040_irq(void)
         
         if (dev_speed())
         {
-            hcd_event_device_attach(ROOT_PORT, true);
+            hcd_event_device_attach(RHPORT_NATIVE, true);
         }
         else
         {
-            hcd_event_device_remove(ROOT_PORT, true);
+            hcd_event_device_remove(RHPORT_NATIVE, true);
         }
 
         // Clear speed change interrupt
@@ -388,6 +389,11 @@ void hcd_port_reset(uint8_t rhport)
     // TODO: Nothing to do here yet. Perhaps need to reset some state?
 }
 
+void hcd_port_reset_end(uint8_t rhport)
+{
+  (void) rhport;
+}
+
 bool hcd_port_connect_status(uint8_t rhport)
 {
     pico_trace("hcd_port_connect_status\n");
@@ -531,7 +537,11 @@ bool hcd_setup_send(uint8_t rhport, uint8_t dev_addr, uint8_t const setup_packet
     (void) rhport;
 
     // Copy data into setup packet buffer
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Warray-bounds"
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
     memcpy((void*)&usbh_dpram->setup_packet[0], setup_packet, 8);
+#pragma GCC diagnostic pop
 
     // Configure EP0 struct with setup info for the trans complete
     struct hw_endpoint *ep = _hw_endpoint_allocate(0);

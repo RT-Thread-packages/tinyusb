@@ -27,6 +27,9 @@
 #ifndef _TUSB_OPTION_H_
 #define _TUSB_OPTION_H_
 
+// To avoid GCC compiler warnings when -pedantic option is used (strict ISO C)
+typedef int make_iso_compilers_happy ;
+
 #include "common/tusb_compiler.h"
 
 #define TUSB_VERSION_MAJOR     0
@@ -242,7 +245,7 @@
   #define TUH_OPT_RHPORT   -1
 #endif
 
-#define CFG_TUH_ENABLED     ( TUH_RHPORT_MODE & OPT_MODE_HOST )
+#define CFG_TUH_ENABLED     (TUH_RHPORT_MODE & OPT_MODE_HOST)
 
 // For backward compatible
 #define TUSB_OPT_DEVICE_ENABLED CFG_TUD_ENABLED
@@ -261,7 +264,7 @@
 
 
 //--------------------------------------------------------------------+
-// COMMON OPTIONS
+// Common Options (Default)
 //--------------------------------------------------------------------+
 
 // Debug enable to print out error message
@@ -289,14 +292,18 @@
 #endif
 
 // mutex is only needed for RTOS TODO also required with multiple core MCUs
-#define TUSB_OPT_MUTEX    (CFG_TUSB_OS != OPT_OS_NONE)
+#define TUSB_OPT_MUTEX      (CFG_TUSB_OS != OPT_OS_NONE)
 
 //--------------------------------------------------------------------
-// DEVICE OPTIONS
+// Device Options (Default)
 //--------------------------------------------------------------------
 
 #ifndef CFG_TUD_ENDPOINT0_SIZE
   #define CFG_TUD_ENDPOINT0_SIZE  64
+#endif
+
+#ifndef CFG_TUD_INTERFACE_MAX
+  #define CFG_TUD_INTERFACE_MAX   16
 #endif
 
 #ifndef CFG_TUD_CDC
@@ -357,7 +364,7 @@
 #endif
 
 //--------------------------------------------------------------------
-// HOST OPTIONS
+// Host Options (Default)
 //--------------------------------------------------------------------
 #if CFG_TUH_ENABLED
   #ifndef CFG_TUH_DEVICE_MAX
@@ -398,6 +405,16 @@
 #ifndef CFG_TUH_API_EDPT_XFER
 #define CFG_TUH_API_EDPT_XFER 0
 #endif
+
+// Enable PIO-USB software host controller
+#ifndef CFG_TUH_RPI_PIO_USB
+#define CFG_TUH_RPI_PIO_USB 0
+#endif
+
+#ifndef CFG_TUD_RPI_PIO_USB
+#define CFG_TUD_RPI_PIO_USB 0
+#endif
+
 
 //------------------------------------------------------------------
 // Configuration Validation
