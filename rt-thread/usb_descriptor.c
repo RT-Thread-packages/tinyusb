@@ -123,7 +123,7 @@ TU_ATTR_WEAK void tud_descriptor_set_serial(char *serial_number, uint8_t length)
         length = 31;
     }
 
-    memcpy(_serial_number, serial_number, length);
+    rt_memcpy(_serial_number, serial_number, length);
     _serial_number[length] = '\0';
 }
 
@@ -139,7 +139,7 @@ TU_ATTR_WEAK uint16_t const *tud_descriptor_string_cb(uint8_t index, uint16_t la
 
     if (index == 0)
     {
-        memcpy(&desc_str[1], string_desc_arr[0], 2);
+        rt_memcpy(&desc_str[1], string_desc_arr[0], 2);
         chr_count = 1;
     }
     else
