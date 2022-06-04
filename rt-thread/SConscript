@@ -54,6 +54,6 @@ if rtconfig.PLATFORM == 'gcc' or rtconfig.PLATFORM == 'armclang': # GCC or Keil 
 elif rtconfig.PLATFORM == 'armcc': # Keil AC5
     LOCAL_CFLAGS += ' --c99 --gnu'
     
-group = DefineGroup('tinyusb', src, depend = ['PKG_USING_TINYUSB'], CPPPATH = path, LOCAL_CFLAGS = LOCAL_CFLAGS)
+group = DefineGroup('TinyUSB', src, depend = ['PKG_USING_TINYUSB'], CPPPATH = path, LOCAL_CFLAGS = LOCAL_CFLAGS)
 
 Return('group')
