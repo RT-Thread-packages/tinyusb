@@ -49,7 +49,7 @@ static int init_tinyusb(void)
     tid = &tusb_thread;
     result = rt_thread_init(tid, "tusb", tusb_thread_entry, RT_NULL,
                             tusb_stack, sizeof(tusb_stack), 4, 10);
-    if (tid != RT_EOK)
+    if (result != RT_EOK)
 #endif /* RT_USING_HEAP */
     {
         LOG_E("Fail to create TinyUSB thread");
