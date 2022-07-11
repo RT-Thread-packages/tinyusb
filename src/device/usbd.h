@@ -33,8 +33,6 @@
 extern "C" {
 #endif
 
-// typedef void (*tud_sof_isr_t) (uint32_t frame_count);
-
 //--------------------------------------------------------------------+
 // Application API
 //--------------------------------------------------------------------+
@@ -60,8 +58,11 @@ void tud_task (void)
 // Check if there is pending events need processing by tud_task()
 bool tud_task_event_ready(void);
 
-// Interrupt handler, name alias to DCD
+#ifndef _TUSB_DCD_H_
 extern void dcd_int_handler(uint8_t rhport);
+#endif
+
+// Interrupt handler, name alias to DCD
 #define tud_int_handler   dcd_int_handler
 
 // Get current bus speed
@@ -97,10 +98,6 @@ bool tud_disconnect(void);
 // Disable pull-up resistor on D+ D-
 // Return false on unsupported MCUs
 bool tud_connect(void);
-
-// Set Start-of-frame (1ms interval) IRQ handler
-// NULL means disabled, frame_count may not be supported on mcus
-// void tud_sof_isr_set(tud_sof_isr_t sof_isr);
 
 // Carry out Data and Status stage of control transfer
 // - If len = 0, it is equivalent to sending status only
