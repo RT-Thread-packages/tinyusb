@@ -1064,7 +1064,7 @@ static void handle_rxflvl_irq(uint8_t rhport)
         {
           uint32_t doepint = epout->doepint;
 
-          if (doepint & DOEPINT_STPKTRX)
+          if (doepint & (DOEPINT_STPKTRX | DOEPINT_OTEPSPR))
           {
             // skip this "no-data" transfer complete event
             // Note: STPKTRX will be clear later by setup received handler
