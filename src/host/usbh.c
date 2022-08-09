@@ -258,7 +258,7 @@ struct
   uint8_t daddr;
   volatile uint8_t stage;
   volatile uint16_t actual_len;
-}_ctrl_xfer;
+} _ctrl_xfer CFG_TUSB_MEM_SECTION CFG_TUSB_MEM_ALIGN;
 
 //------------- Helper Function -------------//
 
@@ -1381,9 +1381,8 @@ static bool enum_new_device(hcd_event_t* event)
     // connected/disconnected directly with roothub
     // wait until device is stable TODO non blocking
     hcd_port_reset(_dev0.rhport);
-    osal_task_delay(RESET_DELAY); // TODO may not work for no-OS on MCU that require reset_end() since
-                                  // sof of controller may not running while reseting
-    hcd_port_reset_end( _dev0.rhport);
+    // osal_task_delay(RESET_DELAY);
+    // hcd_port_reset_end( _dev0.rhport);
 
     // device unplugged while delaying
     if ( !hcd_port_connect_status(_dev0.rhport) ) return true;

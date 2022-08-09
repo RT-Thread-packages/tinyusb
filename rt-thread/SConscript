@@ -2,36 +2,17 @@ import rtconfig
 from building import *
 
 cwd     = GetCurrentDir()
-src     = Split("""
-../src/tusb.c
-../src/common/tusb_fifo.c
-../src/device/usbd.c
-../src/device/usbd_control.c
-./tinyusb_port.c
-./usb_descriptor.c
-""")
+src     = ["../src/tusb.c",
+           "../src/common/tusb_fifo.c",
+           "./tinyusb_port.c"]
 path = [cwd, cwd + "/../src"]
+    
+# Device
+if GetDepend(["PKG_TINYUSB_DEVICE_ENABLE"]):
+    src += ["../src/device/usbd.c",
+            "../src/device/usbd_control.c",
+            "./usb_descriptor.c"]
 
-# BSP
-if GetDepend(["SOC_FAMILY_STM32"]):
-    src += ["bsp/stm32/drv_tinyusb.c",
-            "../src/portable/synopsys/dwc2/dcd_dwc2.c",
-            "../src/portable/st/stm32_fsdev/dcd_stm32_fsdev.c"]
-
-if GetDepend(["SOC_NRF52840"]):
-    src += ["../src/portable/nordic/nrf5x/dcd_nrf5x.c",
-            "bsp/nrf5x/drv_tinyusb.c"]
-
-if GetDepend(["SOC_HPM6000"]):
-    src +=  ["bsp/hpmicro/drv_tinyusb.c",
-    		 "../src/portable/hpm/dcd_hpm.c"]            
-                
-if GetDepend(["SOC_RP2040"]):
-    src += ["bsp/rp2040/drv_tinyusb.c",
-            "../src/portable/raspberrypi/rp2040/rp2040_usb.c",
-            "../src/portable/raspberrypi/rp2040/dcd_rp2040.c"]
-
-# Device class
 if GetDepend(["PKG_TINYUSB_DEVICE_CDC"]):
     src += ["../src/class/cdc/cdc_device.c"]
 
@@ -46,6 +27,37 @@ if GetDepend(["PKG_TINYUSB_DEVICE_EXAMPLE_CDC"]):
 
 if GetDepend(["PKG_TINYUSB_DEVICE_EXAMPLE_HID"]):
     src += ["example/hid_example.c"]
+
+# Host
+if GetDepend(["PKG_TINYUSB_HOST_ENABLE"]):
+    src += ["../src/host/usbh.c"]
+
+if GetDepend(["PKG_TINYUSB_HOST_MSC"]):
+    src += ["../src/class/msc/msc_host.c", "port/msc_host_app.c"]
+
+# BSP
+if GetDepend(["SOC_FAMILY_STM32"]):
+    src += ["bsp/stm32/drv_tinyusb.c",
+            "../src/portable/synopsys/dwc2/dcd_dwc2.c",
+            "../src/portable/st/stm32_fsdev/dcd_stm32_fsdev.c"]
+
+if GetDepend(["SOC_NRF52840"]):
+    src += ["../src/portable/nordic/nrf5x/dcd_nrf5x.c",
+            "bsp/nrf5x/drv_tinyusb.c"]
+
+if GetDepend(["SOC_HPM6000"]):
+    src +=  ["bsp/hpmicro/drv_tinyusb.c"]
+    
+    if GetDepend(["PKG_TINYUSB_DEVICE_ENABLE"]):
+        src += ["../src/portable/hpm/dcd_hpm.c"]
+    
+    if GetDepend(["PKG_TINYUSB_HOST_ENABLE"]):
+        src += ["../src/portable/hpm/hcd_hpm.c"]
+                
+if GetDepend(["SOC_RP2040"]):
+    src += ["bsp/rp2040/drv_tinyusb.c",
+            "../src/portable/raspberrypi/rp2040/rp2040_usb.c",
+            "../src/portable/raspberrypi/rp2040/dcd_rp2040.c"]
   
 LOCAL_CFLAGS = ''
 
