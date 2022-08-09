@@ -61,20 +61,34 @@ extern "C" {
 #endif /* CFG_TUSB_DEBUG */
 
 #ifndef BOARD_DEVICE_RHPORT_NUM
-#define BOARD_DEVICE_RHPORT_NUM     PKG_TINYUSB_RHPORT_NUM
+#define BOARD_DEVICE_RHPORT_NUM     PKG_TINYUSB_DEVICE_RHPORT_NUM
 #endif
-
 #ifndef BOARD_DEVICE_RHPORT_SPEED
 #define BOARD_DEVICE_RHPORT_SPEED   PKG_TINYUSB_DEVICE_PORT_SPEED
 #endif
 
+#ifndef BOARD_HOST_RHPORT_NUM
+#define BOARD_HOST_RHPORT_NUM     PKG_TINYUSB_HOST_RHPORT_NUM
+#endif
+#ifndef BOARD_HOST_RHPORT_SPEED
+#define BOARD_HOST_RHPORT_SPEED   PKG_TINYUSB_HOST_PORT_SPEED
+#endif
+
+#ifdef PKG_TINYUSB_DEVICE_ENABLE
 #if   BOARD_DEVICE_RHPORT_NUM == 0
 #define CFG_TUSB_RHPORT0_MODE     (OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED)
 #elif BOARD_DEVICE_RHPORT_NUM == 1
 #define CFG_TUSB_RHPORT1_MODE     (OPT_MODE_DEVICE | BOARD_DEVICE_RHPORT_SPEED)
-#else
-  #error "Incorrect RHPort configuration"
 #endif
+#endif /* PKG_TINYUSB_ENABLE_DEVICE */
+
+#ifdef PKG_TINYUSB_HOST_ENABLE
+#if   BOARD_HOST_RHPORT_NUM == 0
+#define CFG_TUSB_RHPORT0_MODE     (OPT_MODE_HOST | BOARD_HOST_RHPORT_SPEED)
+#elif BOARD_HOST_RHPORT_NUM == 1
+#define CFG_TUSB_RHPORT1_MODE     (OPT_MODE_HOST | BOARD_HOST_RHPORT_SPEED)
+#endif
+#endif /* PKG_TINYUSB_ENABLE_HOST */
 
 /* USB DMA on some MCUs can only access a specific SRAM region with restriction on alignment.
  * Tinyusb use follows macros to declare transferring memory so that they can be put
@@ -119,6 +133,20 @@ extern "C" {
 #define PKG_TINYUSB_DEVICE_HID_STRING ""
 #endif
 
+//--------------------------------------------------------------------
+// HOST CONFIGURATION
+//--------------------------------------------------------------------
+
+// Size of buffer to hold descriptors and other data used for enumeration
+#define CFG_TUH_ENUMERATION_BUFSIZE PKG_TINYUSB_HOST_ENUM_BUFSIZE
+
+#define CFG_TUH_HUB                 0
+#define CFG_TUH_CDC                 0
+#define CFG_TUH_HID                 0 // typical keyboard + mouse device can have 3-4 HID interfaces
+#define CFG_TUH_VENDOR              0
+
+// max device support (excluding hub device)
+#define CFG_TUH_DEVICE_MAX          (CFG_TUH_HUB ? 4 : 1) // hub typically has 4 ports
 
 #ifdef __cplusplus
 }

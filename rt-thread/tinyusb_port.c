@@ -27,7 +27,12 @@ static void tusb_thread_entry(void *parameter)
     (void) parameter;
     while (1)
     {
+#ifdef PKG_TINYUSB_DEVICE_ENABLE
         tud_task();
+#endif
+#ifdef PKG_TINYUSB_HOST_ENABLE
+        tuh_task();
+#endif
     }
 }
 
