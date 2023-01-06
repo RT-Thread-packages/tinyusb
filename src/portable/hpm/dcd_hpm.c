@@ -25,7 +25,7 @@
  */
 
 /*
- * Copyright (c) 2021 hpmicro
+ * Copyright (c) 2021-2022 HPMicro
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -71,8 +71,12 @@ typedef struct {
  *---------------------------------------------------------------------*/
 static const dcd_controller_t _dcd_controller[] =
 {
+#ifdef HPM_USB0_BASE
     { .regs = (USB_Type*) HPM_USB0_BASE, .irqnum = IRQn_USB0, .ep_count = USB_SOC_DCD_MAX_ENDPOINT_COUNT },
+#endif
+#ifdef HPM_USB1_BASE
     { .regs = (USB_Type*) HPM_USB1_BASE, .irqnum = IRQn_USB1, .ep_count = USB_SOC_DCD_MAX_ENDPOINT_COUNT }
+#endif
 };
 
 ATTR_PLACE_AT_NONCACHEABLE static usb_device_handle_t usb_device_handle[USB_SOC_MAX_COUNT];
