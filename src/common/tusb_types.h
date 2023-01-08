@@ -69,6 +69,15 @@ typedef enum
   TUSB_DIR_IN_MASK = 0x80
 }tusb_dir_t;
 
+enum
+{
+  TUSB_EPSIZE_BULK_FS = 64,
+  TUSB_EPSIZE_BULK_HS= 512,
+
+  TUSB_EPSIZE_ISO_FS_MAX = 1023,
+  TUSB_EPSIZE_ISO_HS_MAX = 1024,
+};
+
 /// Isochronous End Point Attributes
 typedef enum
 {
@@ -225,7 +234,7 @@ enum {
 
 typedef enum
 {
-  XFER_RESULT_SUCCESS,
+  XFER_RESULT_SUCCESS = 0,
   XFER_RESULT_FAILED,
   XFER_RESULT_STALLED,
   XFER_RESULT_TIMEOUT,
@@ -242,7 +251,6 @@ enum
 {
   INTERFACE_INVALID_NUMBER = 0xff
 };
-
 
 typedef enum
 {
@@ -263,6 +271,11 @@ enum
   CONTROL_STAGE_SETUP,
   CONTROL_STAGE_DATA,
   CONTROL_STAGE_ACK
+};
+
+enum
+{
+  TUSB_INDEX_INVALID = 0xff
 };
 
 //--------------------------------------------------------------------+
@@ -512,6 +525,20 @@ TU_ATTR_ALWAYS_INLINE static inline uint16_t tu_edpt_packet_size(tusb_desc_endpo
 {
   return tu_le16toh(desc_ep->wMaxPacketSize) & TU_GENMASK(10, 0);
 }
+
+#if CFG_TUSB_DEBUG
+TU_ATTR_ALWAYS_INLINE static inline const char *tu_edpt_dir_str(tusb_dir_t dir)
+{
+  static const char *str[] = {"out", "in"};
+  return str[dir];
+}
+
+TU_ATTR_ALWAYS_INLINE static inline const char *tu_edpt_type_str(tusb_xfer_type_t t)
+{
+  static const char *str[] = {"control", "isochronous", "bulk", "interrupt"};
+  return str[t];
+}
+#endif
 
 //--------------------------------------------------------------------+
 // Descriptor helper

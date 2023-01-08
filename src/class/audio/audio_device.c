@@ -341,7 +341,7 @@ typedef struct
 
   // Audio control interrupt buffer - no FIFO - 6 Bytes according to UAC 2 specification (p. 74)
 #if CFG_TUD_AUDIO_INT_CTR_EPSIZE_IN
-  CFG_TUSB_MEM_SECTION CFG_TUSB_MEM_ALIGN uint8_t ep_int_ctr_buf[CFG_TUD_AUDIO_INT_CTR_EP_IN_SW_BUFFER_SIZE];
+  CFG_TUSB_MEM_ALIGN uint8_t ep_int_ctr_buf[CFG_TUD_AUDIO_INT_CTR_EP_IN_SW_BUFFER_SIZE];
 #endif
 
   // Decoding parameters - parameters are set when alternate AS interface is set by host
@@ -445,6 +445,10 @@ static inline uint8_t tu_desc_subtype(void const* desc)
 {
   return ((uint8_t const*) desc)[2];
 }
+#endif
+
+#if CFG_TUD_AUDIO_ENABLE_EP_OUT && CFG_TUD_AUDIO_ENABLE_FEEDBACK_EP
+static bool set_fb_params_freq(audiod_function_t* audio, uint32_t sample_freq, uint32_t mclk_freq);
 #endif
 
 bool tud_audio_n_mounted(uint8_t func_id)
@@ -565,7 +569,7 @@ static bool audiod_rx_done_cb(uint8_t rhport, audiod_function_t* audio, uint16_t
 
     case AUDIO_FORMAT_TYPE_I:
 
-      switch (audio->format_type_I_tx)
+      switch (audio->format_type_I_rx)
       {
         case AUDIO_DATA_FORMAT_TYPE_I_PCM:
           TU_VERIFY(audiod_decode_type_I_pcm(rhport, audio, n_bytes_received));
