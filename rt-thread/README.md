@@ -30,10 +30,6 @@ The specific path in RT-Thread ENV package manager is as follows:
 Then let the RT-Thread package manager automatically update, or use the
 `pkgs --update` command to update the package to the BSP.
 
-**Note:** For use in Keil MDK, please use the **ARM Clang** compiler or manually check **GNU Extensions** in the compile options.
-
-![MDK](./assets/mdk.png)
-
 ### 1.2 RT-Thread Studio
 
 Search for `TinyUSB` in RT-Thread Settings to add the package to the project.
