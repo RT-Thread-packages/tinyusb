@@ -11,6 +11,7 @@
 #ifndef _TUSB_CONFIG_H_
 #define _TUSB_CONFIG_H_
 
+#include <rtdef.h>
 #include <rtconfig.h>
 
 #ifdef __cplusplus
@@ -84,11 +85,19 @@ extern "C" {
  * - CFG_TUSB_MEM_ALIGN   : __attribute__ ((aligned(4)))
  */
 #ifndef CFG_TUSB_MEM_SECTION
+#ifdef rt_section
+#define CFG_TUSB_MEM_SECTION        rt_section(PKG_TINYUSB_MEM_SECTION)
+#else
 #define CFG_TUSB_MEM_SECTION        RT_SECTION(PKG_TINYUSB_MEM_SECTION)
+#endif
 #endif
 
 #ifndef CFG_TUSB_MEM_ALIGN
+#ifdef rt_align
+#define CFG_TUSB_MEM_ALIGN          rt_align(PKG_TINYUSB_MEM_ALIGN)
+#else
 #define CFG_TUSB_MEM_ALIGN          ALIGN(PKG_TINYUSB_MEM_ALIGN)
+#endif
 #endif
 
 //--------------------------------------------------------------------
